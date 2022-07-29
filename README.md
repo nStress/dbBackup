@@ -2,7 +2,7 @@
 Backup automat server
 
 
-Utilizare.</br></br>
+<h2>Utilizare.</h2></br></br>
 
 Se adauga scriptul in c://xampp/htdocs/ </br>
 Se editeaza datele de logare la baza de date</br>
