@@ -2,10 +2,10 @@
 Backup automat server
 
 
-Utilizare.
+Utilizare.</br></br>
 
-Se adauga scriptul in c://xampp/htdocs/
-Se editeaza datele de logare la baza de date
-Se executa link-ul http://localhost/index.php
+Se adauga scriptul in c://xampp/htdocs/ </br>
+Se editeaza datele de logare la baza de date</br>
+Se executa link-ul http://localhost/index.php</br></br>
 
 ATENTIE: A nu se inchide pagina.
