@@ -5,20 +5,18 @@ $dbuser = 'root';
 $dbpass = '';
 $dbname = 'testv4';
 $tables = '*'; // * = tot sau vrp_users / vrp_user_vehicles ... etc... pentru cazuri particulare.
-
-if(isset($_POST['db'])) { echo "asdasdas";backup_tables($dbhost, $dbuser, $dbpass, $dbname, $tables);}
+ ;
+if(isset($_POST['db'])) {backup_tables($dbhost, $dbuser, $dbpass, $dbname, $tables);}
 function backup_tables($host, $user, $pass, $dbname, $tables = '*') {
     $link = mysqli_connect($host,$user,$pass, $dbname);
-    if (mysqli_connect_errno())
-    {
+    if (mysqli_connect_errno()){
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
         exit;
     }
 
     mysqli_query($link, "SET NAMES 'utf8'");
 
-    if($tables == '*')
-    {
+    if($tables == '*'){
         $tables = array();
         $result = mysqli_query($link, 'SHOW TABLES');
         while($row = mysqli_fetch_row($result))
@@ -26,14 +24,12 @@ function backup_tables($host, $user, $pass, $dbname, $tables = '*') {
             $tables[] = $row[0];
         }
     }
-    else
-    {
+    else{
         $tables = is_array($tables) ? $tables : explode(',',$tables);
     }
 
     $return = '';
-    foreach($tables as $table)
-    {
+    foreach($tables as $table){
         $result = mysqli_query($link, 'SELECT * FROM '.$table);
         $num_fields = mysqli_num_fields($result);
         $num_rows = mysqli_num_rows($result);
@@ -42,10 +38,8 @@ function backup_tables($host, $user, $pass, $dbname, $tables = '*') {
         $row2 = mysqli_fetch_row(mysqli_query($link, 'SHOW CREATE TABLE '.$table));
         $return.= "\n\n".$row2[1].";\n\n";
         $counter = 1;
-        for ($i = 0; $i < $num_fields; $i++) 
-        {   
-            while($row = mysqli_fetch_row($result))
-            {   
+        for ($i = 0; $i < $num_fields; $i++){   
+            while($row = mysqli_fetch_row($result)){   
                 if($counter == 1){
                     $return.= 'INSERT INTO '.$table.' VALUES(';
                 } else{
@@ -69,12 +63,11 @@ function backup_tables($host, $user, $pass, $dbname, $tables = '*') {
         }
         $return.="\n\n\n";
     }
-
-    $fileName = 'db-backup-'.date("Y-m-d H-i-s").'.sql';
+    $fileName = $dbname.'-'.date("Y-m-d H-i-s").'.sql';    
     $handle = fopen($fileName,'w+');
     fwrite($handle,$return);
     if(fclose($handle)){
-        return "backup facut...: ".$fileName;
+        return $fileName;
         exit; 
     }
 }
@@ -82,20 +75,20 @@ function backup_tables($host, $user, $pass, $dbname, $tables = '*') {
 ?>
 
 <script>
-var min_start = 120;
+var min_start = 1;
 function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
+    var timer = duration, min, sec;
     setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
+        min = parseInt(timer / 60, 10);
+        sec = parseInt(timer % 60, 10);
 
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
+        min = min < 10 ? "0" + min : min;
+        sec = sec < 10 ? "0" + sec : sec;
 
-        display.textContent = minutes + ":" + seconds;
+        display.textContent = min + ":" + sec;
 
         if (--timer < 0) {
-            $.post("/index.php",{db : "db"}).done(function(){
+            $.post('',{db : ''}).done(function(){
                 timer = duration;
             });
         }
@@ -103,13 +96,12 @@ function startTimer(duration, display) {
 }
 
 window.onload = function () {
-    var cdTimmer = 60 * min_start,
+    var cooldown = 60 * min_start,
         display = document.querySelector('#time');
-        
-    startTimer(cdTimmer, display);
+    startTimer(cooldown, display);
 };
 </script>
 
 <body>
-    <div>se face backup in <span id="time">05:00</span> minute <font color='red'>NU INCHIDE PAGINA</font></div>
+    <div>se face backup in <span id="time"></span> minute <font color='red'>NU INCHIDE PAGINA</font></div>
 </body>
