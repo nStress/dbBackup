@@ -1,5 +1,5 @@
 # dbBackup
-Backup automat server</br></br></br>
+Backup automat baza de date</br></br></br>
 
 
 <h2>Utilizare.</h2></br></br>
